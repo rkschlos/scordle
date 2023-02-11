@@ -1,13 +1,10 @@
 import { createRoot } from "react-dom/client";
-import Board from "./Board";
+import HomePage from "./HomePage";
 
 const App = () => {
   return (
     <div>
-      <h1>Scordle!</h1>
-      <h2>Guess the composer</h2>
-
-      <Board />
+      <HomePage />
     </div>
   );
 };

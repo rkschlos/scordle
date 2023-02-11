@@ -1,6 +1,8 @@
 import { useState } from "react";
 import GuessInput from "./GuessInput";
-import HintButton from "./HintButton";
+import StartGameButton from "./StartGameButton";
+import randomNumber from "./utils";
+import GuessesRemaining from "./GuessCounter";
 
 //handler is a function to write to check
 //function checkGuess(guess, answer, handler) {}
@@ -8,29 +10,36 @@ import HintButton from "./HintButton";
 // eslint-disable-next-line no-unused-vars
 const Board = (props) => {
   const [currentGuess, setCurrentGuess] = useState("");
-  //[targetAnswer, setTargetAnswer] = useState("Beethoven");
   const [guessCount, setGuessCount] = useState(0);
-  const [hintCount, setHintCount] = useState(1);
+  const [hintCount, setHintCount] = useState(0);
   const winningAnswers = {
     1: "beethoven",
     2: "mozart",
     3: "tchaikovsky",
   };
-  const [currentGame, setCurrentGame] = useState(
-    Math.ceil(Math.random(Object.keys(winningAnswers).length) + 1)
-  );
-
+  const totalGames = Object.keys(winningAnswers).length;
+  const [currentGame, setCurrentGame] = useState(randomNumber(totalGames));
   console.log(currentGame);
-  console.log(Object.keys(winningAnswers).length);
 
-  function handleClick() {
+  function handleGuessClick() {
     setGuessCount(guessCount + 1);
     const correctAnswer = winningAnswers[currentGame];
     if (currentGuess.toLowerCase() === correctAnswer) {
-      console.log("WINNER");
-    } else {
-      console.log("TRY AGAIN");
+      props.setGameStatus("WINNER");
+    } else if (
+      currentGuess.toLowerCase() !== correctAnswer &&
+      guessCount === 6
+    ) {
+      props.setGameStatus("LOSER");
+    } else if (currentGuess.toLowerCase() !== correctAnswer && guessCount < 6) {
+      handleHintClick();
     }
+    setCurrentGuess("");
+  }
+
+  function handleHintClick() {
+    setGuessCount(guessCount + 1);
+    setHintCount(hintCount + 1);
   }
 
   const gamesPlayed = [currentGame];
@@ -39,23 +48,30 @@ const Board = (props) => {
   );
 
   function pickGame() {
-    const randomIndex = Math.random(gamesLeft.length()) + 1;
-    const game = gamesLeft[randomIndex];
+    const randomGameIndex = randomNumber(gamesLeft.length);
+    const game = gamesLeft[randomGameIndex];
     setCurrentGame(game);
     gamesPlayed.append(game);
   }
-
+  //Show a counter to show how many guesses are left
+  //if winner is guessed, show something that says winner, and ask if they want to play again
+  //if guess is wrong, show somethign that says "Wrong answer"
+  //if hintCount == 6 and a guess is submitted, regardless of win or lose show a button to play a new game
+  //When someone clicks show next measure, reduce amount of possible guesses
   return (
     <div className="row">
-      <HintButton onClick={() => setHintCount(hintCount + 1)}></HintButton>
+      <GuessesRemaining
+        counter={guessCount}
+        hints={hintCount}
+      ></GuessesRemaining>
       <div className="column">
-        {[1, 2, 3, 4, 5].map((i) => {
+        {[0, 1, 2, 3, 4].map((i) => {
           if (i < hintCount) {
             return (
               <img
                 key={i}
                 alt="new measure of score"
-                src={`./images/${winningAnswers[currentGame]}/${i}.png`}
+                src={`./images/${winningAnswers[currentGame]}/${i + 1}.png`}
               />
             );
           } else {
@@ -70,8 +86,11 @@ const Board = (props) => {
           }
         })}
       </div>
-
-      <GuessInput setCurrentGuess={setCurrentGuess} onClick={handleClick} />
+      <GuessInput
+        setCurrentGuess={setCurrentGuess}
+        currentGuess={currentGuess}
+        onClick={handleGuessClick}
+      />
     </div>
   );
 };

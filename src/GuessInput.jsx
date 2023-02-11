@@ -1,15 +1,16 @@
 const GuessInput = (props) => {
   return (
     <div>
-      <h3>Enter Guess Here</h3>
       <label htmlFor="guess">
         <input
+          value={props.currentGuess}
           onChange={(e) => {
             props.setCurrentGuess(e.target.value);
           }}
+          placeholder="Enter Guess"
           type="text"
         ></input>
-        <button onClick={props.onClick}>Submit</button>
+        <button onClick={props.onClick}>Guess/Next Hint</button>
       </label>
     </div>
   );
