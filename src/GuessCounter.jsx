@@ -1,5 +1,5 @@
 const GuessesRemaining = (props) => {
-  let guessesLeft = 6;
+  let guessesLeft = 5;
   if (props.hints > props.counter) {
     guessesLeft -= props.hints;
   } else {
