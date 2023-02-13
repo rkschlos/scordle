@@ -34,8 +34,11 @@ const HomePage = (props) => {
 
   return (
     <div>
-      <header>Scordle!</header>
-      <h2 className="description">Guess the composer</h2>
+      <header>
+        <h1 className="title">Scordle!</h1>
+        <br></br>
+        <h2 className="description">Guess the composer</h2>
+      </header>
       {gameStatus === "IN_PROGRESS" ? (
         <Board
           currentGame={currentGame}

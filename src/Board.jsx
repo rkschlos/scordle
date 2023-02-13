@@ -1,6 +1,6 @@
 import { useState } from "react";
 import GuessInput from "./GuessInput";
-import GuessesRemaining from "./GuessCounter";
+import GuessesRemaining from "./GuessesRemaining";
 
 const Board = (props) => {
   const [currentGuess, setCurrentGuess] = useState("");
@@ -30,16 +30,17 @@ const Board = (props) => {
   }
 
   return (
-    <div className="row">
+    <div className="board-container">
       <GuessesRemaining
         counter={guessCount}
         hints={hintCount}
       ></GuessesRemaining>
-      <div className="column">
+      <div className="score-container">
         {[0, 1, 2, 3, 4].map((i) => {
           if (i <= hintCount) {
             return (
               <img
+                className="measure-img"
                 key={`score${i}`}
                 alt="new measure of score"
                 src={`./images/${winningAnswers[props.currentGame]}/${

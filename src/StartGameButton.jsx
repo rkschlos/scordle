@@ -1,7 +1,9 @@
 const StartGameButton = (props) => {
   return (
-    <div>
-      <button onClick={props.onClick}>Start a new game!</button>
+    <div className="start-game-container">
+      <button className="start-game-button" onClick={props.onClick}>
+        Start a new game!
+      </button>
     </div>
   );
 };
