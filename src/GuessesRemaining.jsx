@@ -1,10 +1,6 @@
 const GuessesRemaining = (props) => {
   let guessesLeft = 5;
-  if (props.hints > props.counter) {
-    guessesLeft -= props.hints;
-  } else {
-    guessesLeft -= props.counter;
-  }
+  guessesLeft -= props.counter;
   return (
     <div className="guesses-remaining">
       {guessesLeft > 1

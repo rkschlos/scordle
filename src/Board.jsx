@@ -5,47 +5,36 @@ import GuessesRemaining from "./GuessesRemaining";
 const Board = (props) => {
   const [currentGuess, setCurrentGuess] = useState("");
   const [guessCount, setGuessCount] = useState(0);
-  const [hintCount, setHintCount] = useState(0);
-  const winningAnswers = props.winningAnswers;
+  const winningAnswer = props.winningAnswer;
 
   function handleGuessClick() {
     setGuessCount(guessCount + 1);
-    const correctAnswer = winningAnswers[props.currentGame];
-    if (currentGuess.toLowerCase() === correctAnswer) {
+
+    if (currentGuess.toLowerCase() === winningAnswer) {
       props.setGameStatus("WINNER");
     } else if (
-      currentGuess.toLowerCase() !== correctAnswer &&
+      currentGuess.toLowerCase() !== winningAnswer &&
       guessCount === 4
     ) {
       props.setGameStatus("LOSER");
-    } else if (currentGuess.toLowerCase() !== correctAnswer && guessCount < 5) {
-      handleHintClick();
+    } else if (currentGuess.toLowerCase() !== winningAnswer && guessCount < 5) {
+      setGuessCount(guessCount + 1);
     }
     setCurrentGuess("");
   }
 
-  function handleHintClick() {
-    setGuessCount(guessCount + 1);
-    setHintCount(hintCount + 1);
-  }
-
   return (
     <div className="board-container">
-      <GuessesRemaining
-        counter={guessCount}
-        hints={hintCount}
-      ></GuessesRemaining>
+      <GuessesRemaining counter={guessCount}></GuessesRemaining>
       <div className="score-container">
         {[0, 1, 2, 3, 4].map((i) => {
-          if (i <= hintCount) {
+          if (i <= guessCount) {
             return (
               <img
                 className="measure-img"
                 key={`score${i}`}
                 alt="new measure of score"
-                src={`./images/${winningAnswers[props.currentGame]}/${
-                  i + 1
-                }.png`}
+                src={`./images/${winningAnswer}/${i + 1}.png`}
               />
             );
           } else {
