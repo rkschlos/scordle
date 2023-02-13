@@ -28,10 +28,14 @@ const HomePage = (props) => {
     setCurrentGame(game);
   }
 
+  function checkIfFinishedLastGame() {
+    return gamesPlayed.length == numberOfGamesPossible;
+  }
+
   return (
     <div>
-      <h1>Scordle!</h1>
-      <h2>Guess the composer</h2>
+      <header>Scordle!</header>
+      <h2 className="description">Guess the composer</h2>
       {gameStatus === "IN_PROGRESS" ? (
         <Board
           currentGame={currentGame}
@@ -49,27 +53,36 @@ const HomePage = (props) => {
           ></StartGameButton>
         </div>
       ) : null}
+
       {gameStatus === "WINNER" ? (
         <div>
           WINNER
-          <StartGameButton
-            onClick={() => {
-              pickNewGame();
-              setGameStatus("IN_PROGRESS");
-            }}
-          ></StartGameButton>
+          {checkIfFinishedLastGame() == false ? (
+            <StartGameButton
+              onClick={() => {
+                pickNewGame();
+                setGameStatus("IN_PROGRESS");
+              }}
+            ></StartGameButton>
+          ) : (
+            <div>Congrats, you have played all the possible games!</div>
+          )}
         </div>
       ) : null}
       {gameStatus === "LOSER" ? (
         <div>
-          BETTER LUCK NEXT TIME, Answer was:{" "}
+          BETTER LUCK NEXT TIME! The answer was:{" "}
           {winningAnswers[currentGame].toUpperCase()}
-          <StartGameButton
-            onClick={() => {
-              pickNewGame();
-              setGameStatus("IN_PROGRESS");
-            }}
-          ></StartGameButton>
+          {checkIfFinishedLastGame() == false ? (
+            <StartGameButton
+              onClick={() => {
+                pickNewGame();
+                setGameStatus("IN_PROGRESS");
+              }}
+            ></StartGameButton>
+          ) : (
+            <div>Congrats, you have played all the possible games!</div>
+          )}
         </div>
       ) : null}
     </div>

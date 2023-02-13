@@ -40,7 +40,7 @@ const Board = (props) => {
           if (i <= hintCount) {
             return (
               <img
-                key={i}
+                key={`score${i}`}
                 alt="new measure of score"
                 src={`./images/${winningAnswers[props.currentGame]}/${
                   i + 1
@@ -50,7 +50,7 @@ const Board = (props) => {
           } else {
             return (
               <img
-                key={i}
+                key={`question${i}`}
                 alt="?"
                 src="./images/question.png"
                 style={{ width: 208, height: 208 }}
