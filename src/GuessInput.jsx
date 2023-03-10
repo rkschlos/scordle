@@ -12,10 +12,15 @@ const GuessInput = (props) => {
             onChange={(e) => {
               props.setCurrentGuess(e.target.value);
             }}
+            aria-label="guess-input"
             placeholder="Enter Guess"
             type="text"
           ></input>
-          <button onClick={handleSubmit} type="submit">
+          <button
+            onClick={handleSubmit}
+            type="submit"
+            aria-label="submit-guess"
+          >
             Guess/Next Hint
           </button>
         </label>
